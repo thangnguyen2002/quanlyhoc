@@ -32,11 +32,14 @@ public class User {
     @Column(name = "phone_number", length = 15, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "student_code", length = 200)
-    private String studentCode;
+    @Column(name = "user_code", length = 200)
+    private String userCode;
 
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
+
+    @Column(name = "address")
+    private String address;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
