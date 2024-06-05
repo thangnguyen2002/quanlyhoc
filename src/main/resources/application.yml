@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/quanlyhoc
+    url: jdbc:mysql://localhost:3306/quanlytrungtam
     username: root
     password: 123456
   jpa:
