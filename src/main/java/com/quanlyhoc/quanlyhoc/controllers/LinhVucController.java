@@ -1,14 +1,14 @@
 package com.quanlyhoc.quanlyhoc.controllers;
 
+import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
+import com.quanlyhoc.quanlyhoc.models.LinhVuc;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
+import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IPhongHocService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("${api.prefix}/phonghoc")
+@RequestMapping("${api.prefix}/linhvuc")
 @RequiredArgsConstructor
-public class PhongHocController {
+public class LinhVucController {
     @Autowired
-    private final IPhongHocService iPhongHocService;
+    private final ILinhVucService iLinhVucService;
 
     @PostMapping
-    public ResponseEntity<?> themPhonghoc(
-            @Valid @RequestBody PhongHocDTO phongHocDTO,
+    public ResponseEntity<?> themLinhVuc(
+            @Valid @RequestBody LinhVucDTO linhVucDTO,
             BindingResult result
     ) {
         try {
@@ -37,19 +37,19 @@ public class PhongHocController {
                         .toList();
                 return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
             }
-            PhongHoc phongHoc = iPhongHocService.themPhongHoc(phongHocDTO);
-            return new ResponseEntity<>(phongHoc, HttpStatus.OK);
+            LinhVuc linhVuc = iLinhVucService.themLinhVuc(linhVucDTO);
+            return new ResponseEntity<>(linhVuc, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/search/{TenPhongHoc}")
-    public ResponseEntity<?> timPhonghoc(@PathVariable String TenPhongHoc) {
+    @GetMapping("/search/{tenLinhVuc}")
+    public ResponseEntity<?> timPhonghoc(@PathVariable String tenLinhVuc) {
 
         try {
-            List<PhongHoc> phongHocList = iPhongHocService.findByTenPhongHoc(TenPhongHoc);
-            return new ResponseEntity<>(phongHocList, HttpStatus.OK);
+            List<LinhVuc> linhVucList = iLinhVucService.findByTenLinhVuc(tenLinhVuc);
+            return new ResponseEntity<>(linhVucList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -90,22 +90,22 @@ public class PhongHocController {
 //    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> suaPhongHoc(
+    public ResponseEntity<?> suaLinhVuc(
             @Valid @PathVariable("id") Long id,
-            @Valid @RequestBody PhongHocDTO phongHocDTO) {
+            @Valid @RequestBody LinhVucDTO linhVucDTO) {
         try {
-            PhongHoc phongHoc = iPhongHocService.suaPhongHoc(id, phongHocDTO);
-            return new ResponseEntity<>(phongHoc, HttpStatus.OK);
+            LinhVuc linhVuc = iLinhVucService.suaLinhVuc(id, linhVucDTO);
+            return new ResponseEntity<>(linhVuc, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> xoaPhongHoc(@Valid @PathVariable("id") Long id) {
+    public ResponseEntity<String> xoaLinhVuc(@Valid @PathVariable("id") Long id) {
         try {
-            iPhongHocService.xoaPhongHoc(id);
-            return new ResponseEntity<>(String.format("Phòng học với id = %d đã xoá thành công", id),
+            iLinhVucService.xoaPLinhVuc(id);
+            return new ResponseEntity<>(String.format("Lĩnh vực với id = %d đã xoá thành công", id),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

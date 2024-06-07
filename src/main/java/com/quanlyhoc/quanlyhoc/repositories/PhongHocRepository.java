@@ -13,6 +13,6 @@ public interface PhongHocRepository  extends JpaRepository<PhongHoc, Long> {
 //            "AND (:keyword IS NULL OR :keyword = '' OR s.subjectName LIKE %:keyword%)")
 //    Page<Subject> searchSubjects(Long teacherId, String keyword, Pageable pageable);
 
-    @Query("SELECT p FROM PhongHoc p WHERE p.TenPhongHoc = :TenPhongHoc")
+    @Query("SELECT p FROM PhongHoc p WHERE p.TenPhongHoc LIKE %:TenPhongHoc%")
     List<PhongHoc> findByName(String TenPhongHoc);
 }
