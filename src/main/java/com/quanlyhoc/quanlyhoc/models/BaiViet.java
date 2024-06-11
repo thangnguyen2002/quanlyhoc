@@ -27,8 +27,9 @@ public class BaiViet {
     @Column(name = "ngay_dang")
     private LocalDate ngayDang;
 
-    @Column(name = "nguoi_viet_bai", length = 255)
-    private String nguoiVietBai;
+    @ManyToOne
+    @JoinColumn(name = "nguoi_viet_bai")
+    private NhanVien nhanVien;
 
     @Column(name = "noi_dung", length = 255)
     private String noiDung;

@@ -3,6 +3,7 @@ import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.repositories.LienHeRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IEmailService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ILienHeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class EmailService implements IEmailService {
     @Autowired
     JavaMailSender javaMailSender;
-
+    @Transactional
     @Override
     public void guiEmail(String emailNhan, String tieuDe, String noiDung) {
         SimpleMailMessage message = new SimpleMailMessage();

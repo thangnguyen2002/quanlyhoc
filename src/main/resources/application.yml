@@ -12,14 +12,16 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: sharenamngo@gmail.com
-    password: 10a11thanga
+    username: trangha642002@gmail.com
+    password: rxjk kxnk rgji xpiv
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+  security:
+    enabled: false
 api:
   prefix: api/v1
 jwt:

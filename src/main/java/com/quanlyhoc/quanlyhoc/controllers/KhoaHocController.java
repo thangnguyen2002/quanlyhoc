@@ -1,5 +1,6 @@
 package com.quanlyhoc.quanlyhoc.controllers;
 
+import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KhoaHocDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
@@ -44,11 +45,11 @@ public class KhoaHocController {
         }
     }
 
-    @GetMapping("/search/{tenKhoaHoc}")
-    public ResponseEntity<?> timKhoaHoc(@PathVariable String tenKhoaHoc) {
+    @PostMapping("/search")
+    public ResponseEntity<?> timKhoaHoc(@RequestBody KeywordDTO keywordDTO) {
 
         try {
-            List<KhoaHoc> khoaHocList = iKhoaHocService.findByTenKhoaHoc(tenKhoaHoc);
+            List<KhoaHoc> khoaHocList = iKhoaHocService.findByTenKhoaHoc(keywordDTO.getKeyword());
             return new ResponseEntity<>(khoaHocList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

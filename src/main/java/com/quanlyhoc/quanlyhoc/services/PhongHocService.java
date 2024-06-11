@@ -19,6 +19,7 @@ import java.util.Optional;
 public class PhongHocService implements IPhongHocService {
     @Autowired
     private final PhongHocRepository phongHocRepository;
+    @Transactional
     @Override
     public PhongHoc themPhongHoc(PhongHocDTO phongHocDTO) throws Exception {
         PhongHoc phongHoc = PhongHoc.builder()
@@ -29,7 +30,7 @@ public class PhongHocService implements IPhongHocService {
 
         return phongHocRepository.save(phongHoc);
     }
-
+    @Transactional
     @Override
     public PhongHoc suaPhongHoc(Long id, PhongHocDTO phongHocDTO) throws Exception {
         PhongHoc exPhongHoc = phongHocRepository.findById(id)
@@ -41,12 +42,14 @@ public class PhongHocService implements IPhongHocService {
         return phongHocRepository.save(exPhongHoc);
     }
 
+    @Transactional
     @Override
     public void xoaPhongHoc(Long id) throws Exception {
         Optional<PhongHoc> exPhongHoc = phongHocRepository.findById(id);
         exPhongHoc.ifPresent(phongHocRepository::delete);
     }
 
+    @Transactional
     @Override
     public List<PhongHoc> findByTenPhongHoc(String TenPhongHoc) throws Exception {
         return phongHocRepository.findByName(TenPhongHoc);

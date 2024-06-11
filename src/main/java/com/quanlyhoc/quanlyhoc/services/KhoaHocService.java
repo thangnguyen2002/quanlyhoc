@@ -8,6 +8,7 @@ import com.quanlyhoc.quanlyhoc.repositories.KhoaHocRepository;
 import com.quanlyhoc.quanlyhoc.repositories.LinhVucRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IKhoaHocService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class KhoaHocService implements IKhoaHocService {
     @Autowired
     private final LinhVucRepository linhVucRepository;
 
+    @Transactional
     @Override
     public KhoaHoc themKhoaHoc(KhoaHocDTO khoaHocDTO) throws Exception {
         Long maLinhVuc = khoaHocDTO.getMaLinhVuc();
@@ -42,7 +44,7 @@ public class KhoaHocService implements IKhoaHocService {
 
         return khoaHocRepository.save(khoaHoc);
     }
-
+    @Transactional
     @Override
     public KhoaHoc suaKhoaHoc(Long id, KhoaHocDTO khoaHocDTO) throws Exception {
         KhoaHoc exKhoaHoc = khoaHocRepository.findById(id)
@@ -62,13 +64,13 @@ public class KhoaHocService implements IKhoaHocService {
 
         return khoaHocRepository.save(exKhoaHoc);
     }
-
+    @Transactional
     @Override
     public void xoaKhoaHoc(Long id) throws Exception {
         Optional<KhoaHoc> exKhoaHoc = khoaHocRepository.findById(id);
         exKhoaHoc.ifPresent(khoaHocRepository::delete);
     }
-
+    @Transactional
     @Override
     public List<KhoaHoc> findByTenKhoaHoc(String tenKhoaHoc) throws Exception {
         return khoaHocRepository.findByName(tenKhoaHoc);

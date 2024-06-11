@@ -1,5 +1,6 @@
 package com.quanlyhoc.quanlyhoc.controllers;
 
+import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IPhongHocService;
@@ -44,11 +45,11 @@ public class PhongHocController {
         }
     }
 
-    @GetMapping("/search/{TenPhongHoc}")
-    public ResponseEntity<?> timPhonghoc(@PathVariable String TenPhongHoc) {
+    @PostMapping("/search")
+    public ResponseEntity<?> timPhonghoc(@RequestBody KeywordDTO keywordDTO) {
 
         try {
-            List<PhongHoc> phongHocList = iPhongHocService.findByTenPhongHoc(TenPhongHoc);
+            List<PhongHoc> phongHocList = iPhongHocService.findByTenPhongHoc(keywordDTO.getKeyword());
             return new ResponseEntity<>(phongHocList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

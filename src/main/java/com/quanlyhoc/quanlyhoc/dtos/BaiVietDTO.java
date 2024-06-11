@@ -21,7 +21,7 @@ public class BaiVietDTO {
     private LocalDate ngayDang;
 
     @JsonProperty("nguoi_viet_bai")
-    private String nguoiVietBai;
+    private Long nguoiVietBai;
 
     @JsonProperty("noi_dung")
     private String noiDung;
@@ -35,8 +35,8 @@ public class BaiVietDTO {
     @JsonProperty("trang_thai")
     private Boolean trangThai;
 
-//    @JsonProperty("url_hinh_anh_minh_hoa")
-//    private String urlHinhAnhMinhHoa;
+    @JsonProperty("url_hinh_anh_minh_hoa")
+    private String urlHinhAnhMinhHoa;
 
     @JsonProperty("noi_dung_tom_tat")
     private String noiDungTomTat;

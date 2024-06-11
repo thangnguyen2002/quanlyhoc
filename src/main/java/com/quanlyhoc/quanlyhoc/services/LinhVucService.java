@@ -8,6 +8,7 @@ import com.quanlyhoc.quanlyhoc.repositories.LinhVucRepository;
 import com.quanlyhoc.quanlyhoc.repositories.PhongHocRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IPhongHocService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class LinhVucService implements ILinhVucService {
     @Autowired
     private final LinhVucRepository linhVucRepository;
-
+    @Transactional
     @Override
     public LinhVuc themLinhVuc(LinhVucDTO linhVucDTO) throws Exception {
         LinhVuc linhVuc = LinhVuc.builder()
@@ -30,6 +31,7 @@ public class LinhVucService implements ILinhVucService {
         return linhVucRepository.save(linhVuc);
     }
 
+    @Transactional
     @Override
     public LinhVuc suaLinhVuc(Long id, LinhVucDTO linhVucDTO) throws Exception {
         LinhVuc exLinhVuc = linhVucRepository.findById(id)
@@ -39,12 +41,14 @@ public class LinhVucService implements ILinhVucService {
         return linhVucRepository.save(exLinhVuc);
     }
 
+    @Transactional
     @Override
     public void xoaPLinhVuc(Long id) throws Exception {
         Optional<LinhVuc> exLinhVuc = linhVucRepository.findById(id);
         exLinhVuc.ifPresent(linhVucRepository::delete);
     }
 
+    @Transactional
     @Override
     public List<LinhVuc> findByTenLinhVuc(String tenLinhVuc) throws Exception {
         return linhVucRepository.findByName(tenLinhVuc);

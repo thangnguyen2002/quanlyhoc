@@ -47,14 +47,14 @@ public class LienHeController {
     public ResponseEntity<?> guiEmailLienHe(@RequestBody EmailFormDTO emailFormDTO) {
         try {
             emailService.guiEmail(emailFormDTO.getNguoiNhan(), emailFormDTO.getTieuDe(), emailFormDTO.getNoiDung()); //phai tim email ton tai ko...
-            return new ResponseEntity<>("Gửi thành công", HttpStatus.OK);
+            return new ResponseEntity<>("Gửi email thành công", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/search-by-date")
-    public ResponseEntity<?> searchByNgayLienHe(
+    @GetMapping("/filter-by-date")
+    public ResponseEntity<?> filterByNgayLienHe(
         @RequestParam("ngayBatDau") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayBatDau,
         @RequestParam("ngayKetThuc") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayKetThuc) {
         try {

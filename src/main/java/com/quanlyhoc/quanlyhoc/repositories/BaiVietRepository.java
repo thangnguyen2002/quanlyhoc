@@ -12,6 +12,9 @@ public interface BaiVietRepository extends JpaRepository<BaiViet, Long> {
 //            "(:teacherId IS NULL OR : teacherId = 0 OR s.user.id = :teacherId) " +
 //            "AND (:keyword IS NULL OR :keyword = '' OR s.subjectName LIKE %:keyword%)")
 //    Page<Subject> searchSubjects(Long teacherId, String keyword, Pageable pageable);
-@Query("SELECT b FROM BaiViet b WHERE b.maBaiViet LIKE %:searchTerm% OR b.tieuDe LIKE %:keyword%")
-List<BaiViet> findByMaBaiVietOrTieuDe(String keyword);
+@Query("SELECT b FROM BaiViet b WHERE b.tieuDe LIKE %:keyword%")
+List<BaiViet> findByTieuDe(String keyword);
+
+    @Query("SELECT b FROM BaiViet b WHERE b.maBaiViet = :maBaiViet")
+    List<BaiViet> findByMaBaiViet(Long maBaiViet);
 }

@@ -1,5 +1,6 @@
 package com.quanlyhoc.quanlyhoc.controllers;
 
+import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
@@ -44,11 +45,11 @@ public class LinhVucController {
         }
     }
 
-    @GetMapping("/search/{tenLinhVuc}")
-    public ResponseEntity<?> timPhonghoc(@PathVariable String tenLinhVuc) {
+    @PostMapping("/search")
+    public ResponseEntity<?> timPhonghoc(@RequestBody KeywordDTO keywordDTO) {
 
         try {
-            List<LinhVuc> linhVucList = iLinhVucService.findByTenLinhVuc(tenLinhVuc);
+            List<LinhVuc> linhVucList = iLinhVucService.findByTenLinhVuc(keywordDTO.getKeyword());
             return new ResponseEntity<>(linhVucList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

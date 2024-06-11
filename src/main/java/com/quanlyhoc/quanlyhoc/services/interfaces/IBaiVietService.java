@@ -12,6 +12,7 @@ public interface IBaiVietService {
     BaiViet themBaiViet(BaiVietDTO baiVietDTO, MultipartFile file) throws Exception;
     BaiViet suaBaiViet(Long id, BaiVietDTO baiVietDTO, MultipartFile file) throws Exception;
     void xoaBaiViet(Long id) throws Exception;
+    List<BaiViet> findByTieuDe(String keyword) throws Exception;
 
-    List<BaiViet> findByMaBaiVietOrTieuDe(String keyword) throws Exception;
+    List<BaiViet> findByMaBaiViet(Long keyword) throws Exception;
 }
