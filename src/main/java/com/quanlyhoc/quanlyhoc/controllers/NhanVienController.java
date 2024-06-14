@@ -35,7 +35,7 @@ public class NhanVienController {
 
     @PostMapping
     public ResponseEntity<?> themNhanVien(
-            @Valid @RequestPart NhanVienDTO nhanVienDTO,
+            @Valid @RequestPart("nhanVienDTO") NhanVienDTO nhanVienDTO,
             @RequestPart("file") MultipartFile file) {
         try {
             NhanVien nhanVien = iNhanVienService.themNhanVien(nhanVienDTO, file);
@@ -48,7 +48,7 @@ public class NhanVienController {
     @PutMapping("/{id}")
     public ResponseEntity<?> suaNhanVien(
             @Valid @PathVariable("id") Long id,
-            @Valid @RequestPart NhanVienDTO nhanVienDTO,
+            @Valid @RequestPart("nhanVienDTO") NhanVienDTO nhanVienDTO,
             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             NhanVien nhanVien = iNhanVienService.suaNhanVien(id, nhanVienDTO, file);
@@ -68,10 +68,10 @@ public class NhanVienController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> timNhanVien(@RequestParam String keyword) {
+    @PostMapping("/search")
+    public ResponseEntity<?> timNhanVien(@RequestBody KeywordDTO keywordDTO) {
         try {
-            List<NhanVien> nhanVienList = iNhanVienService.timNhanVien(keyword);
+            List<NhanVien> nhanVienList = iNhanVienService.timNhanVien(keywordDTO.getKeyword());
             return new ResponseEntity<>(nhanVienList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -91,10 +91,10 @@ public class NhanVienController {
         }
     }
 
-    @GetMapping("/exportByChucVu")
-    public void exportNhanVienTheoChucVu(@RequestParam String tenChucVu, HttpServletResponse response) {
+    @PostMapping("/exportByChucVu")
+    public void exportNhanVienTheoChucVu(@RequestBody KeywordDTO keywordDTO, HttpServletResponse response) {
         try {
-            List<NhanVien> nhanVienList = iNhanVienService.findByChucVu(tenChucVu);
+            List<NhanVien> nhanVienList = iNhanVienService.findByChucVu(keywordDTO.getKeyword());
             byte[] bytes = iNhanVienService.exportNhanVienToExcel(nhanVienList);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=nhanvien_filtered.xlsx");

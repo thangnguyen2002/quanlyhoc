@@ -112,6 +112,7 @@ public class NhanVienService implements INhanVienService {
         return nhanVienRepository.findByTenChucVu(tenChucVu);
     }
 
+    @Transactional
     @Override
     public byte[] exportNhanVienToExcel(List<NhanVien> nhanVienList) throws Exception {
         try (Workbook workbook = new XSSFWorkbook()) {
