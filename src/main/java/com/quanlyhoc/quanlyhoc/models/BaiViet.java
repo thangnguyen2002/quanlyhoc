@@ -21,9 +21,6 @@ public class BaiViet {
     @Column(name = "lan_cap_nhat_cuoi_cung")
     private LocalDate lanCapNhatCuoiCung;
 
-    @Column(name = "ma_menu", length = 255)
-    private String maMenu;
-
     @Column(name = "ngay_dang")
     private LocalDate ngayDang;
 
@@ -33,9 +30,6 @@ public class BaiViet {
 
     @Column(name = "noi_dung", length = 255)
     private String noiDung;
-
-    @Column(name = "so_luong_truy_cap")
-    private Integer soLuongTruyCap;
 
     @Column(name = "tieu_de", length = 255)
     private String tieuDe;

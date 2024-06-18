@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,12 +46,10 @@ public class BaiVietService implements IBaiVietService {
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy nhân viên với mã: " + maNhanvien));
 
         BaiViet baiViet = BaiViet.builder()
-                .lanCapNhatCuoiCung(baiVietDTO.getLanCapNhatCuoiCung())
-                .maMenu(baiVietDTO.getMaMenu())
-                .ngayDang(baiVietDTO.getNgayDang())
+                .lanCapNhatCuoiCung(LocalDate.now())
+                .ngayDang(LocalDate.now())
                 .nhanVien(exNhanVien)
                 .noiDung(baiVietDTO.getNoiDung())
-                .soLuongTruyCap(baiVietDTO.getSoLuongTruyCap())
                 .tieuDe(baiVietDTO.getTieuDe())
                 .trangThai(baiVietDTO.getTrangThai())
                 .urlHinhAnhMinhHoa(fileUrl)
@@ -70,12 +69,9 @@ public class BaiVietService implements IBaiVietService {
         NhanVien exNhanVien = nhanVienRepository.findById(maNhanvien)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy nhân viên với mã: " + maNhanvien));
 
-        exBaiViet.setLanCapNhatCuoiCung(baiVietDTO.getLanCapNhatCuoiCung());
-        exBaiViet.setMaMenu(baiVietDTO.getMaMenu());
-        exBaiViet.setNgayDang(baiVietDTO.getNgayDang());
+        exBaiViet.setLanCapNhatCuoiCung(LocalDate.now());
         exBaiViet.setNhanVien(exNhanVien);
         exBaiViet.setNoiDung(baiVietDTO.getNoiDung());
-        exBaiViet.setSoLuongTruyCap(baiVietDTO.getSoLuongTruyCap());
         exBaiViet.setTieuDe(baiVietDTO.getTieuDe());
         exBaiViet.setTrangThai(baiVietDTO.getTrangThai());
         exBaiViet.setNoiDungTomTat(baiVietDTO.getNoiDungTomTat());

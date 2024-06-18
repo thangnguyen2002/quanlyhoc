@@ -64,4 +64,14 @@ public class ChucVuController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping
+    public ResponseEntity<?> getAllChucVu() {
+        try {
+            List<ChucVu> chucVuList = iChucVuService.getAllChucVu();
+            return new ResponseEntity<>(chucVuList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

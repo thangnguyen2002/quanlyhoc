@@ -55,4 +55,10 @@ public class ChucVuService implements IChucVuService {
     public List<ChucVu> timChucVuTheoTen(String tenChucVu) throws Exception {
         return chucVuRepository.findByName(tenChucVu);
     }
+
+    @Override
+    public List<ChucVu> getAllChucVu() throws Exception {
+        return chucVuRepository.findAll();
+    }
+
 }
