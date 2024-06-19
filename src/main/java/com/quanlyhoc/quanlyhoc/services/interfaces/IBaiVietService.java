@@ -4,6 +4,9 @@ import com.quanlyhoc.quanlyhoc.dtos.BaiVietDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KhoaHocDTO;
 import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -15,4 +18,5 @@ public interface IBaiVietService {
     List<BaiViet> findByTieuDe(String keyword) throws Exception;
 
     List<BaiViet> findByMaBaiViet(Long keyword) throws Exception;
+    Page<BaiViet> findAll(Pageable pageable) throws Exception;
 }

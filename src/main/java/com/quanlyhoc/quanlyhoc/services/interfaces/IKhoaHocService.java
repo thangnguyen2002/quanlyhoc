@@ -2,8 +2,11 @@ package com.quanlyhoc.quanlyhoc.services.interfaces;
 
 import com.quanlyhoc.quanlyhoc.dtos.KhoaHocDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,4 +16,5 @@ public interface IKhoaHocService {
     void xoaKhoaHoc(Long id) throws Exception;
 
     List<KhoaHoc> findByTenKhoaHoc(String tenKhoaHoc) throws Exception;
+    Page<KhoaHoc> findAll(Pageable pageable) throws Exception;
 }

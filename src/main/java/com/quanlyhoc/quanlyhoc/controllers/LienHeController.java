@@ -4,14 +4,21 @@ import com.quanlyhoc.quanlyhoc.dtos.EmailFormDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LienHeDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
+import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
+import com.quanlyhoc.quanlyhoc.responses.KhoaHocListResponse;
+import com.quanlyhoc.quanlyhoc.responses.LienHeListResponse;
 import com.quanlyhoc.quanlyhoc.services.EmailService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ILienHeService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +79,26 @@ public class LienHeController {
             return new ResponseEntity<>(lienHeList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllLienHe(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ngayLienHe") String sortBy
+    ) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+            Page<LienHe> lienHePage = iLienHeService.findAll(pageable);
+            int totalPages = lienHePage.getTotalPages();
+            List<LienHe> lienHes = lienHePage.getContent();
+            return new ResponseEntity<>(LienHeListResponse.builder()
+                    .lienHeList(lienHes)
+                    .totalPages(totalPages)
+                    .build(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

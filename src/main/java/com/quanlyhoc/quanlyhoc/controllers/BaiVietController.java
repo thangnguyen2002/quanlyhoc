@@ -3,10 +3,16 @@ package com.quanlyhoc.quanlyhoc.controllers;
 import com.quanlyhoc.quanlyhoc.dtos.BaiVietDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.models.BaiViet;
+import com.quanlyhoc.quanlyhoc.responses.BaiVietListResponse;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IBaiVietService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -89,4 +95,23 @@ public class BaiVietController {
         return str != null && str.matches("\\d+");
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllBaiViet(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "lanCapNhatCuoiCung") String sortBy
+    ) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+            Page<BaiViet> baiVietPage = iBaiVietService.findAll(pageable);
+            int totalPages = baiVietPage.getTotalPages();
+            List<BaiViet> baiviets = baiVietPage.getContent();
+            return new ResponseEntity<>(BaiVietListResponse.builder()
+                    .baiVietList(baiviets)
+                    .totalPages(totalPages)
+                    .build(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

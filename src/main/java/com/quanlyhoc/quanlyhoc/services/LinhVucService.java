@@ -2,6 +2,7 @@ package com.quanlyhoc.quanlyhoc.services;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
+import com.quanlyhoc.quanlyhoc.models.ChucVu;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
 import com.quanlyhoc.quanlyhoc.repositories.LinhVucRepository;
@@ -52,5 +53,10 @@ public class LinhVucService implements ILinhVucService {
     @Override
     public List<LinhVuc> findByTenLinhVuc(String tenLinhVuc) throws Exception {
         return linhVucRepository.findByName(tenLinhVuc);
+    }
+
+    @Override
+    public List<LinhVuc> getAllLinhVuc() throws Exception {
+        return linhVucRepository.findAll();
     }
 }

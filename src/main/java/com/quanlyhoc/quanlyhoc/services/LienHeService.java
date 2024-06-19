@@ -1,6 +1,7 @@
 package com.quanlyhoc.quanlyhoc.services;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
 import com.quanlyhoc.quanlyhoc.repositories.LienHeRepository;
@@ -10,6 +11,8 @@ import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,5 +42,11 @@ public class LienHeService implements ILienHeService {
     @Override
     public List<LienHe> findByEmailOrHoTen(String keyword) throws Exception {
         return lienHeRepository.findByEmailOrHoTen(keyword);
+    }
+
+    @Transactional
+    @Override
+    public Page<LienHe> findAll(Pageable pageable) throws Exception {
+        return lienHeRepository.findAll(pageable);
     }
 }

@@ -2,6 +2,7 @@ package com.quanlyhoc.quanlyhoc.services;
 
 import com.quanlyhoc.quanlyhoc.dtos.TaiKhoanDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
+import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
 import com.quanlyhoc.quanlyhoc.repositories.NhanVienRepository;
@@ -10,6 +11,8 @@ import com.quanlyhoc.quanlyhoc.services.interfaces.ITaiKhoanService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -77,5 +80,11 @@ public class TaiKhoanService implements ITaiKhoanService {
     @Override
     public List<TaiKhoan> timTaiKhoanTheoTen(String tenTaiKhoan) throws Exception {
         return taiKhoanRepository.findByTenTaiKhoanContaining(tenTaiKhoan);
+    }
+
+    @Transactional
+    @Override
+    public Page<TaiKhoan> findAll(Pageable pageable) throws Exception {
+        return taiKhoanRepository.findAll(pageable);
     }
 }

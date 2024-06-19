@@ -11,6 +11,8 @@ import com.quanlyhoc.quanlyhoc.services.interfaces.IBaiVietService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -100,5 +102,9 @@ public class BaiVietService implements IBaiVietService {
         return baiVietRepository.findByMaBaiViet(keyword);
     }
 
-
+    @Transactional
+    @Override
+    public Page<BaiViet> findAll(Pageable pageable) throws Exception {
+        return baiVietRepository.findAll(pageable);
+    }
 }

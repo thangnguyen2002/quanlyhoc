@@ -2,6 +2,7 @@ package com.quanlyhoc.quanlyhoc.services;
 import com.quanlyhoc.quanlyhoc.dtos.KhoaHocDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
 import com.quanlyhoc.quanlyhoc.repositories.KhoaHocRepository;
@@ -11,6 +12,8 @@ import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,5 +77,11 @@ public class KhoaHocService implements IKhoaHocService {
     @Override
     public List<KhoaHoc> findByTenKhoaHoc(String tenKhoaHoc) throws Exception {
         return khoaHocRepository.findByName(tenKhoaHoc);
+    }
+
+    @Transactional
+    @Override
+    public Page<KhoaHoc> findAll(Pageable pageable) throws Exception {
+        return khoaHocRepository.findAll(pageable);
     }
 }

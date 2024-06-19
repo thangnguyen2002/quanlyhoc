@@ -4,6 +4,8 @@ import com.quanlyhoc.quanlyhoc.dtos.NhanVienDTO;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -16,4 +18,6 @@ public interface INhanVienService {
     List<NhanVien> timNhanVien(String keyword) throws Exception;
     List<NhanVien> findByChucVu(String tenChucVu) throws Exception;
     byte[] exportNhanVienToExcel(List<NhanVien> nhanVienList) throws Exception;
+
+    Page<NhanVien> findAll(Pageable pageable) throws Exception;
 }

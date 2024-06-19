@@ -5,12 +5,18 @@ import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.NhanVienDTO;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.NhanVien;
+import com.quanlyhoc.quanlyhoc.responses.LienHeListResponse;
+import com.quanlyhoc.quanlyhoc.responses.NhanVienListResponse;
 import com.quanlyhoc.quanlyhoc.services.EmailService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.INhanVienService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -121,6 +127,26 @@ public class NhanVienController {
             return new ResponseEntity<>(nhanVienList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllNhanVien(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "maNhanVien") String sortBy
+    ) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+            Page<NhanVien> nhanVienPage = iNhanVienService.findAll(pageable);
+            int totalPages = nhanVienPage.getTotalPages();
+            List<NhanVien> nhanViens = nhanVienPage.getContent();
+            return new ResponseEntity<>(NhanVienListResponse.builder()
+                    .nhanVienList(nhanViens)
+                    .totalPages(totalPages)
+                    .build(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

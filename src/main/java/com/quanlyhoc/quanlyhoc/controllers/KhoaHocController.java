@@ -3,13 +3,20 @@ package com.quanlyhoc.quanlyhoc.controllers;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KhoaHocDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
+import com.quanlyhoc.quanlyhoc.responses.BaiVietListResponse;
+import com.quanlyhoc.quanlyhoc.responses.KhoaHocListResponse;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IKhoaHocService;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ILinhVucService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -76,6 +83,26 @@ public class KhoaHocController {
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllKhoaHoc(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "maKhoaHoc") String sortBy
+    ) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+            Page<KhoaHoc> khoaHocPage = iKhoaHocService.findAll(pageable);
+            int totalPages = khoaHocPage.getTotalPages();
+            List<KhoaHoc> khoaHocs = khoaHocPage.getContent();
+            return new ResponseEntity<>(KhoaHocListResponse.builder()
+                    .khoaHocList(khoaHocs)
+                    .totalPages(totalPages)
+                    .build(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

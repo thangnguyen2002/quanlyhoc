@@ -2,11 +2,18 @@ package com.quanlyhoc.quanlyhoc.controllers;
 
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.TaiKhoanDTO;
+import com.quanlyhoc.quanlyhoc.models.PhongHoc;
 import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
+import com.quanlyhoc.quanlyhoc.responses.PhongHocListResponse;
+import com.quanlyhoc.quanlyhoc.responses.TaiKhoanListResponse;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ITaiKhoanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +69,26 @@ public class TaiKhoanController {
             return new ResponseEntity<>(taiKhoanList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllTaiKhoan(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "maTaiKhoan") String sortBy
+    ) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+            Page<TaiKhoan> taiKhoanPage = iTaiKhoanService.findAll(pageable);
+            int totalPages = taiKhoanPage.getTotalPages();
+            List<TaiKhoan> taiKhoans = taiKhoanPage.getContent();
+            return new ResponseEntity<>(TaiKhoanListResponse.builder()
+                    .taiKhoanList(taiKhoans)
+                    .totalPages(totalPages)
+                    .build(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

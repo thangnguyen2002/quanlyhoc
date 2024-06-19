@@ -3,6 +3,7 @@ package com.quanlyhoc.quanlyhoc.services;
 import com.quanlyhoc.quanlyhoc.dtos.NhanVienDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
 import com.quanlyhoc.quanlyhoc.models.ChucVu;
+import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import com.quanlyhoc.quanlyhoc.repositories.ChucVuRepository;
 import com.quanlyhoc.quanlyhoc.repositories.NhanVienRepository;
@@ -17,6 +18,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -159,5 +162,11 @@ public class NhanVienService implements INhanVienService {
                 return out.toByteArray();
             }
         }
+    }
+
+    @Transactional
+    @Override
+    public Page<NhanVien> findAll(Pageable pageable) throws Exception {
+        return nhanVienRepository.findAll(pageable);
     }
 }
