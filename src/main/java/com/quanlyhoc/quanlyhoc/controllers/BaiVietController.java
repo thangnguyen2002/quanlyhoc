@@ -3,6 +3,7 @@ package com.quanlyhoc.quanlyhoc.controllers;
 import com.quanlyhoc.quanlyhoc.dtos.BaiVietDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.models.BaiViet;
+import com.quanlyhoc.quanlyhoc.models.ChucVu;
 import com.quanlyhoc.quanlyhoc.responses.BaiVietListResponse;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IBaiVietService;
 import jakarta.validation.Valid;
@@ -112,6 +113,16 @@ public class BaiVietController {
                     .build(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBaiVietById(@Valid @PathVariable("id") Long id) {
+        try {
+            BaiViet baiViet = iBaiVietService.findById(id);
+            return new ResponseEntity<>(baiViet, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

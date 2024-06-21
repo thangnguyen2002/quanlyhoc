@@ -3,6 +3,7 @@ package com.quanlyhoc.quanlyhoc.controllers;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.ChucVu;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
@@ -90,4 +91,13 @@ public class LinhVucController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getLinhVucById(@Valid @PathVariable("id") Long id) {
+        try {
+            LinhVuc linhVuc = iLinhVucService.findById(id);
+            return new ResponseEntity<>(linhVuc, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

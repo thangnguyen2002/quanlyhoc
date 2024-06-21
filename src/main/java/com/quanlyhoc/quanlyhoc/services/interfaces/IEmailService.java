@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IEmailService {
     void guiEmail(String emailNhan, String tieuDe, String noiDung);
+
 }

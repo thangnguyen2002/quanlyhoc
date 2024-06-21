@@ -3,6 +3,7 @@ package com.quanlyhoc.quanlyhoc.controllers;
 import com.quanlyhoc.quanlyhoc.dtos.EmailFormDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.NhanVienDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import com.quanlyhoc.quanlyhoc.responses.LienHeListResponse;
@@ -147,6 +148,16 @@ public class NhanVienController {
                     .build(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getNhanVienById(@Valid @PathVariable("id") Long id) {
+        try {
+            NhanVien nhanVien = iNhanVienService.findById(id);
+            return new ResponseEntity<>(nhanVien, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

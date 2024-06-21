@@ -107,4 +107,10 @@ public class BaiVietService implements IBaiVietService {
     public Page<BaiViet> findAll(Pageable pageable) throws Exception {
         return baiVietRepository.findAll(pageable);
     }
+
+    @Override
+    public BaiViet findById(Long id) throws Exception {
+        return baiVietRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy bài viết với mã: " + id));
+    }
 }

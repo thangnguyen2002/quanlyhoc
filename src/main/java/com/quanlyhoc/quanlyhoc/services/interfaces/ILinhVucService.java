@@ -16,4 +16,5 @@ public interface ILinhVucService {
     List<LinhVuc> findByTenLinhVuc(String tenLinhVuc) throws Exception;
 
     List<LinhVuc> getAllLinhVuc() throws Exception;
+    LinhVuc findById(Long id) throws Exception;
 }

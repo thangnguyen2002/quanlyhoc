@@ -2,6 +2,7 @@ package com.quanlyhoc.quanlyhoc.services;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
 import com.quanlyhoc.quanlyhoc.models.BaiViet;
+import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
 import com.quanlyhoc.quanlyhoc.repositories.LienHeRepository;
@@ -48,5 +49,11 @@ public class LienHeService implements ILienHeService {
     @Override
     public Page<LienHe> findAll(Pageable pageable) throws Exception {
         return lienHeRepository.findAll(pageable);
+    }
+
+    @Override
+    public LienHe findById(Long id) throws Exception {
+        return lienHeRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy liên hệ với mã: " + id));
     }
 }

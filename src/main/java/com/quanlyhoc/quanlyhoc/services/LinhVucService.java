@@ -59,4 +59,10 @@ public class LinhVucService implements ILinhVucService {
     public List<LinhVuc> getAllLinhVuc() throws Exception {
         return linhVucRepository.findAll();
     }
+
+    @Override
+    public LinhVuc findById(Long id) throws Exception {
+        return linhVucRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy lĩnh vực với mã: " + id));
+    }
 }

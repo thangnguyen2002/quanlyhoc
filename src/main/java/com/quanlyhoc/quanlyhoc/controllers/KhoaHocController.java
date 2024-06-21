@@ -106,4 +106,14 @@ public class KhoaHocController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getKhoaHocById(@Valid @PathVariable("id") Long id) {
+        try {
+            KhoaHoc khoahoc = iKhoaHocService.findById(id);
+            return new ResponseEntity<>(khoahoc, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

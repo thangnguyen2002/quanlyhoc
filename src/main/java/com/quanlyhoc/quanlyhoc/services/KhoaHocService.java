@@ -84,4 +84,10 @@ public class KhoaHocService implements IKhoaHocService {
     public Page<KhoaHoc> findAll(Pageable pageable) throws Exception {
         return khoaHocRepository.findAll(pageable);
     }
+
+    @Override
+    public KhoaHoc findById(Long id) throws Exception {
+        return khoaHocRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy khoá học với mã: " + id));
+    }
 }

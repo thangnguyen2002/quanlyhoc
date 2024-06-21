@@ -13,4 +13,6 @@ public interface IChucVuService {
     void xoaChucVu(Long id) throws Exception;
     List<ChucVu> timChucVuTheoTen(String tenChucVu) throws Exception;
     List<ChucVu> getAllChucVu() throws Exception;
+
+    ChucVu timChucVuTheoId(Long id) throws Exception;
 }

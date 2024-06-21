@@ -2,6 +2,7 @@ package com.quanlyhoc.quanlyhoc.controllers;
 
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.TaiKhoanDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
 import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
 import com.quanlyhoc.quanlyhoc.responses.PhongHocListResponse;
@@ -89,6 +90,16 @@ public class TaiKhoanController {
                     .build(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTaiKhoanById(@Valid @PathVariable("id") Long id) {
+        try {
+            TaiKhoan taiKhoan = iTaiKhoanService.findById(id);
+            return new ResponseEntity<>(taiKhoan, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

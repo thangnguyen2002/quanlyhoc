@@ -2,6 +2,7 @@ package com.quanlyhoc.quanlyhoc.controllers;
 
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
 import com.quanlyhoc.quanlyhoc.responses.NhanVienListResponse;
@@ -100,6 +101,16 @@ public class PhongHocController {
                     .build(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getPhongHocById(@Valid @PathVariable("id") Long id) {
+        try {
+            PhongHoc phongHoc = iPhongHocService.findById(id);
+            return new ResponseEntity<>(phongHoc, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

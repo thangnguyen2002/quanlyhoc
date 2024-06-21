@@ -62,4 +62,10 @@ public class PhongHocService implements IPhongHocService {
     public Page<PhongHoc> findAll(Pageable pageable) throws Exception {
         return phongHocRepository.findAll(pageable);
     }
+
+    @Override
+    public PhongHoc findById(Long id) throws Exception {
+        return phongHocRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy phòng học với mã: " + id));
+    }
 }

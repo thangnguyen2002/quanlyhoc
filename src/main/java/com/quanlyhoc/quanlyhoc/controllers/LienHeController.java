@@ -4,6 +4,7 @@ import com.quanlyhoc.quanlyhoc.dtos.EmailFormDTO;
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LienHeDTO;
 import com.quanlyhoc.quanlyhoc.dtos.LinhVucDTO;
+import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.KhoaHoc;
 import com.quanlyhoc.quanlyhoc.models.LienHe;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
@@ -99,6 +100,16 @@ public class LienHeController {
                     .build(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getLienHeById(@Valid @PathVariable("id") Long id) {
+        try {
+            LienHe lienHe = iLienHeService.findById(id);
+            return new ResponseEntity<>(lienHe, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

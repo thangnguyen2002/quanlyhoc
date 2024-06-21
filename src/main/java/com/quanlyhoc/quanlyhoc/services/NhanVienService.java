@@ -169,4 +169,10 @@ public class NhanVienService implements INhanVienService {
     public Page<NhanVien> findAll(Pageable pageable) throws Exception {
         return nhanVienRepository.findAll(pageable);
     }
+
+    @Override
+    public NhanVien findById(Long id) throws Exception {
+        return nhanVienRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy nhân viên với mã: " + id));
+    }
 }

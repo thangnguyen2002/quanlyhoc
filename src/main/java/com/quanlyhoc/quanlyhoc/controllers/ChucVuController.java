@@ -74,4 +74,14 @@ public class ChucVuController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getChucVuById(@Valid @PathVariable("id") Long id) {
+        try {
+            ChucVu chucVu = iChucVuService.timChucVuTheoId(id);
+            return new ResponseEntity<>(chucVu, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

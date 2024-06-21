@@ -61,4 +61,10 @@ public class ChucVuService implements IChucVuService {
         return chucVuRepository.findAll();
     }
 
+    @Override
+    public ChucVu timChucVuTheoId(Long id) throws Exception {
+        return chucVuRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy chức vụ với mã: " + id));
+    }
+
 }

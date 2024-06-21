@@ -15,4 +15,6 @@ public interface IPhongHocService {
 
     List<PhongHoc> findByTenPhongHoc(String TenPhongHoc) throws Exception;
     Page<PhongHoc> findAll(Pageable pageable) throws Exception;
+
+    PhongHoc findById(Long id) throws Exception;
 }

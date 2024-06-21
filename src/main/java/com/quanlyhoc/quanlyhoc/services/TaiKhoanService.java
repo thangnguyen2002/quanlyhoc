@@ -87,4 +87,10 @@ public class TaiKhoanService implements ITaiKhoanService {
     public Page<TaiKhoan> findAll(Pageable pageable) throws Exception {
         return taiKhoanRepository.findAll(pageable);
     }
+
+    @Override
+    public TaiKhoan findById(Long id) throws Exception {
+        return taiKhoanRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy tài khoản với mã: " + id));
+    }
 }
