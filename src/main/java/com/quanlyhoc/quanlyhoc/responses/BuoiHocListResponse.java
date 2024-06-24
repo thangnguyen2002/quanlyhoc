@@ -1,7 +1,7 @@
 package com.quanlyhoc.quanlyhoc.responses;
 
-import com.quanlyhoc.quanlyhoc.models.BaiViet;
-import com.quanlyhoc.quanlyhoc.models.NhanVien;
+import com.quanlyhoc.quanlyhoc.models.BuoiHoc;
+import com.quanlyhoc.quanlyhoc.models.LienHe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
-public class NhanVienListResponse {
-    private List<NhanVien> nhanVienList;
+public class BuoiHocListResponse {
+    private List<BuoiHoc> buoiHocList;
     private int totalPages;
 }

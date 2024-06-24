@@ -18,16 +18,12 @@ public class TaiKhoan {
     @Column(name = "ghi_chu", length = 255)
     private String ghiChu;
 
-    @ManyToOne
-    @JoinColumn(name = "ma_nhan_vien")
-    private NhanVien nhanVien;
+    @Column(name = "ten_tai_khoan", length = 255)
+    private String tenTaiKhoan;
 
     @Column(name = "mat_khau", length = 255)
     private String matKhau;
 
-    @Column(name = "quyen_truy_cap", length = 255)
-    private String quyenTruyCap;
-
-    @Column(name = "ten_tai_khoan", length = 255)
-    private String tenTaiKhoan;
+    @Column(name = "vai_tro", length = 255)
+    private String vaiTro;
 }

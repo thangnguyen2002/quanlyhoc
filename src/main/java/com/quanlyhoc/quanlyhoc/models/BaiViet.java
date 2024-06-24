@@ -24,18 +24,11 @@ public class BaiViet {
     @Column(name = "ngay_dang")
     private LocalDate ngayDang;
 
-    @ManyToOne
-    @JoinColumn(name = "nguoi_viet_bai")
-    private NhanVien nhanVien;
-
     @Column(name = "noi_dung", length = 255)
     private String noiDung;
 
     @Column(name = "tieu_de", length = 255)
     private String tieuDe;
-
-    @Column(name = "trang_thai")
-    private Boolean trangThai;
 
     @Column(name = "url_hinh_anh_minh_hoa", length = 255)
     private String urlHinhAnhMinhHoa;

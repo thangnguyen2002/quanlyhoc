@@ -3,10 +3,8 @@ package com.quanlyhoc.quanlyhoc.services;
 import com.quanlyhoc.quanlyhoc.dtos.BaiVietDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
 import com.quanlyhoc.quanlyhoc.models.BaiViet;
-import com.quanlyhoc.quanlyhoc.models.LinhVuc;
-import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import com.quanlyhoc.quanlyhoc.repositories.BaiVietRepository;
-import com.quanlyhoc.quanlyhoc.repositories.NhanVienRepository;
+import com.quanlyhoc.quanlyhoc.repositories.GiangVienRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IBaiVietService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +26,7 @@ public class BaiVietService implements IBaiVietService {
     private final BaiVietRepository baiVietRepository;
 
     @Autowired
-    private final NhanVienRepository nhanVienRepository;
+    private final GiangVienRepository nhanVienRepository;
 
     @Autowired
     private final FileService fileService;
@@ -43,17 +36,11 @@ public class BaiVietService implements IBaiVietService {
     public BaiViet themBaiViet(BaiVietDTO baiVietDTO, MultipartFile file) throws Exception {
         String fileUrl = fileService.saveFile(file);
 
-        Long maNhanvien = baiVietDTO.getNguoiVietBai();
-        NhanVien exNhanVien = nhanVienRepository.findById(maNhanvien)
-                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy nhân viên với mã: " + maNhanvien));
-
         BaiViet baiViet = BaiViet.builder()
                 .lanCapNhatCuoiCung(LocalDate.now())
                 .ngayDang(LocalDate.now())
-                .nhanVien(exNhanVien)
                 .noiDung(baiVietDTO.getNoiDung())
                 .tieuDe(baiVietDTO.getTieuDe())
-                .trangThai(baiVietDTO.getTrangThai())
                 .urlHinhAnhMinhHoa(fileUrl)
                 .noiDungTomTat(baiVietDTO.getNoiDungTomTat())
                 .build();
@@ -67,15 +54,9 @@ public class BaiVietService implements IBaiVietService {
         BaiViet exBaiViet = baiVietRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy bài viết với mã: " + id));
 
-        Long maNhanvien = baiVietDTO.getNguoiVietBai();
-        NhanVien exNhanVien = nhanVienRepository.findById(maNhanvien)
-                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy nhân viên với mã: " + maNhanvien));
-
         exBaiViet.setLanCapNhatCuoiCung(LocalDate.now());
-        exBaiViet.setNhanVien(exNhanVien);
         exBaiViet.setNoiDung(baiVietDTO.getNoiDung());
         exBaiViet.setTieuDe(baiVietDTO.getTieuDe());
-        exBaiViet.setTrangThai(baiVietDTO.getTrangThai());
         exBaiViet.setNoiDungTomTat(baiVietDTO.getNoiDungTomTat());
 
         if (file != null && !file.isEmpty()) {

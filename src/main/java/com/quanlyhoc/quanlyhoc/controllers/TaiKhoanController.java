@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,10 +31,11 @@ public class TaiKhoanController {
 
     @PostMapping
     public ResponseEntity<?> themTaiKhoan(
-            @Valid @RequestBody TaiKhoanDTO taiKhoanDTO
+            @Valid @RequestPart("taiKhoanDTO") TaiKhoanDTO taiKhoanDTO,
+            @RequestPart(value = "file", required = false) MultipartFile file
     ) {
         try {
-            TaiKhoan taiKhoan = iTaiKhoanService.themTaiKhoan(taiKhoanDTO);
+            TaiKhoan taiKhoan = iTaiKhoanService.themTaiKhoan(taiKhoanDTO, file);
             return new ResponseEntity<>(taiKhoan, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

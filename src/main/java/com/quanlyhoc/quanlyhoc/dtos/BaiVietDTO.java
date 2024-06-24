@@ -11,17 +11,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class BaiVietDTO {
-    @JsonProperty("nguoi_viet_bai")
-    private Long nguoiVietBai;
-
     @JsonProperty("noi_dung")
     private String noiDung;
 
     @JsonProperty("tieu_de")
     private String tieuDe;
-
-    @JsonProperty("trang_thai")
-    private Boolean trangThai;
 
     @JsonProperty("url_hinh_anh_minh_hoa")
     private String urlHinhAnhMinhHoa;

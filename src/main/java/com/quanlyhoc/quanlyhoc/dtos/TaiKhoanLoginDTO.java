@@ -10,11 +10,12 @@
 //@Builder
 //@AllArgsConstructor
 //@NoArgsConstructor
-//public class UserLoginDTO {
-//    @JsonProperty("phone_number")
-//    @NotBlank(message = "Phone number is required")
-//    private String phoneNumber;
+//public class TaiKhoanLoginDTO {
+//    @JsonProperty("ten_tai_khoan")
+//    @NotBlank(message = "Tài khoản không thể để trống")
+//    private String tenTaiKhoan;
 //
-//    @NotBlank(message = "Password cannot be blank")
-//    private String password;
+//    @JsonProperty("mat_khau")
+//    @NotBlank(message = "Mật khẩu không thể để trống")
+//    private String matKhau;
 //}

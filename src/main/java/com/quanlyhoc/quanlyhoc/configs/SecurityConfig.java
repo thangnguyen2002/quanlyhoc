@@ -36,7 +36,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ensure CORS is enabled
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorization -> authorization
-                        .requestMatchers(apiPrefix + "/**").permitAll()
+//                        .requestMatchers(apiPrefix + "/taikhoan/login").permitAll()
+
+//                        .requestMatchers(HttpMethod.GET, apiPrefix + "/linhvuc/**").hasRole("giangvien")
+                                .requestMatchers( apiPrefix + "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

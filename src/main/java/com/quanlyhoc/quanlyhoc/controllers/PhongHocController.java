@@ -2,10 +2,7 @@ package com.quanlyhoc.quanlyhoc.controllers;
 
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.PhongHocDTO;
-import com.quanlyhoc.quanlyhoc.models.BaiViet;
-import com.quanlyhoc.quanlyhoc.models.NhanVien;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
-import com.quanlyhoc.quanlyhoc.responses.NhanVienListResponse;
 import com.quanlyhoc.quanlyhoc.responses.PhongHocListResponse;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IPhongHocService;
 import jakarta.validation.Valid;

@@ -1,6 +1,6 @@
 //package com.quanlyhoc.quanlyhoc.dtos;
 //
-//import com.quanlyhoc.quanlyhoc.models.Role;
+//import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
@@ -9,16 +9,17 @@
 //import java.util.Collections;
 //
 //public class CustomUserDetail implements UserDetails {
-//    private String username;
-//    private String password;
+//    private String ten_tai_khoan;
+//    private String mat_khau;
 //    private GrantedAuthority authority;
-//    private Long userId;
+//    private Long ma_tai_khoan;
 //
-//    public CustomUserDetail(String username, String password, Role role, Long userId) {
-//        this.username = username;
-//        this.password = password;
+//    public CustomUserDetail(String ten_tai_khoan, String mat_khau, Long ma_tai_khoan) {
+//        TaiKhoan taiKhoan =
+//        this.ten_tai_khoan = ten_tai_khoan;
+//        this.mat_khau = mat_khau;
 //        this.authority = new SimpleGrantedAuthority("ROLE_" + role.getName());
-//        this.userId = userId;
+//        this.ma_tai_khoan = ma_tai_khoan;
 //    }
 //
 //    @Override

@@ -8,4 +8,5 @@ import java.util.List;
 public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, Long> {
     List<TaiKhoan> findByTenTaiKhoanContaining(String tenTaiKhoan);
     TaiKhoan findByTenTaiKhoan(String tenTaiKhoan);
+    boolean existsByTenTaiKhoan(String tenTaiKhoan);
 }
