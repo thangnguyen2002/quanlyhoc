@@ -2,6 +2,8 @@ package com.quanlyhoc.quanlyhoc.controllers;
 
 import com.quanlyhoc.quanlyhoc.dtos.KeywordDTO;
 import com.quanlyhoc.quanlyhoc.dtos.TaiKhoanDTO;
+import com.quanlyhoc.quanlyhoc.dtos.TaiKhoan_GiangVienDTO;
+import com.quanlyhoc.quanlyhoc.dtos.TaiKhoan_HocVienDTO;
 import com.quanlyhoc.quanlyhoc.models.BaiViet;
 import com.quanlyhoc.quanlyhoc.models.PhongHoc;
 import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
@@ -29,13 +31,38 @@ public class TaiKhoanController {
     @Autowired
     private final ITaiKhoanService iTaiKhoanService;
 
-    @PostMapping
-    public ResponseEntity<?> themTaiKhoan(
-            @Valid @RequestPart("taiKhoanDTO") TaiKhoanDTO taiKhoanDTO,
+    @PostMapping("/admin")
+    public ResponseEntity<?> themTaiKhoanAdmin(
+            @Valid @RequestBody TaiKhoanDTO taiKhoanDTO
+    ) {
+        try {
+            TaiKhoan taiKhoan = iTaiKhoanService.themTaiKhoanAdmin(taiKhoanDTO);
+            return new ResponseEntity<>(taiKhoan, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/giangvien")
+    public ResponseEntity<?> themTaiKhoanGiangVien(
+            @Valid @RequestPart("taiKhoan_giangVienDTO") TaiKhoan_GiangVienDTO taiKhoan_giangVienDTO,
             @RequestPart(value = "file", required = false) MultipartFile file
     ) {
         try {
-            TaiKhoan taiKhoan = iTaiKhoanService.themTaiKhoan(taiKhoanDTO, file);
+            TaiKhoan taiKhoan = iTaiKhoanService.themTaiKhoanGiangVien(taiKhoan_giangVienDTO, file);
+            return new ResponseEntity<>(taiKhoan, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/hocvien")
+    public ResponseEntity<?> themTaiKhoanHocVien(
+            @Valid @RequestPart("taiKhoan_hocVienDTO") TaiKhoan_HocVienDTO taiKhoan_hocVienDTO,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    ) {
+        try {
+            TaiKhoan taiKhoan = iTaiKhoanService.themTaiKhoanHocVien(taiKhoan_hocVienDTO, file);
             return new ResponseEntity<>(taiKhoan, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

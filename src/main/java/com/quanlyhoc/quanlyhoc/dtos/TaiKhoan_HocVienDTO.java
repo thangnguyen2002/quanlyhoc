@@ -11,15 +11,24 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HocVienDTO {
+public class TaiKhoan_HocVienDTO {
+    @JsonProperty("ghi_chu")
+    private String ghiChu;
+
+    @JsonProperty("ten_tai_khoan")
+    private String tenTaiKhoan;
+
+    @JsonProperty("mat_khau")
+    private String matKhau;
+
+    @JsonProperty("vai_tro")
+    private String vaiTro;
+
     @JsonProperty("dia_chi")
     private String diaChi;
 
     @JsonProperty("email")
     private String email;
-
-    @JsonProperty("ghi_chu")
-    private String ghiChu;
 
     @JsonProperty("so_cmnd")
     private String soCmnd;
@@ -41,8 +50,5 @@ public class HocVienDTO {
 
     @JsonProperty("tinh_trang_hoc_tap")
     private String tinhTrangHocTap;
-
-    @JsonProperty("ma_tai_khoan")
-    private Long maTaiKhoan;
 
 }

@@ -1,8 +1,6 @@
 package com.quanlyhoc.quanlyhoc.services;
 
-import com.quanlyhoc.quanlyhoc.dtos.GiangVienDTO;
-import com.quanlyhoc.quanlyhoc.dtos.HocVienDTO;
-import com.quanlyhoc.quanlyhoc.dtos.TaiKhoanDTO;
+import com.quanlyhoc.quanlyhoc.dtos.*;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
 import com.quanlyhoc.quanlyhoc.models.GiangVien;
 import com.quanlyhoc.quanlyhoc.models.HocVien;
@@ -48,7 +46,7 @@ public class TaiKhoanService implements ITaiKhoanService {
 
     @Transactional
     @Override
-    public TaiKhoan themTaiKhoan(TaiKhoanDTO taiKhoanDTO, MultipartFile file) throws Exception {
+    public TaiKhoan themTaiKhoanAdmin(TaiKhoanDTO taiKhoanDTO) throws Exception {
         // Kiểm tra nếu tên tài khoản đã tồn tại
         if (taiKhoanRepository.existsByTenTaiKhoan(taiKhoanDTO.getTenTaiKhoan())) {
             throw new Exception("Tên tài khoản đã tồn tại");
@@ -60,6 +58,22 @@ public class TaiKhoanService implements ITaiKhoanService {
         taiKhoan.setVaiTro(taiKhoanDTO.getVaiTro());
         taiKhoan.setGhiChu(taiKhoanDTO.getGhiChu());
 
+        return taiKhoanRepository.save(taiKhoan);
+    }
+
+
+    @Override
+    public TaiKhoan themTaiKhoanGiangVien(TaiKhoan_GiangVienDTO taiKhoanGiangVienDTO, MultipartFile file) throws Exception {
+        if (taiKhoanRepository.existsByTenTaiKhoan(taiKhoanGiangVienDTO.getTenTaiKhoan())) {
+            throw new Exception("Tên tài khoản đã tồn tại");
+        }
+
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setTenTaiKhoan(taiKhoanGiangVienDTO.getTenTaiKhoan());
+        taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoanGiangVienDTO.getMatKhau()));
+        taiKhoan.setVaiTro(taiKhoanGiangVienDTO.getVaiTro());
+        taiKhoan.setGhiChu(taiKhoanGiangVienDTO.getGhiChu());
+
         taiKhoan = taiKhoanRepository.save(taiKhoan);
 
         String fileUrl = null;
@@ -67,58 +81,66 @@ public class TaiKhoanService implements ITaiKhoanService {
             fileUrl = fileService.saveFile(file);
         }
 
-        switch (taiKhoanDTO.getVaiTro().toUpperCase()) {
-            case "HOCVIEN":
-                HocVienDTO hocVienDTO = (HocVienDTO) taiKhoanDTO;
-                HocVien hocVien = new HocVien();
-                hocVien.setTaiKhoan(taiKhoan);
-                hocVien.setDiaChi(hocVienDTO.getDiaChi());
-                hocVien.setEmail(hocVienDTO.getEmail());
-                hocVien.setGhiChu(hocVienDTO.getGhiChu());
-                hocVien.setSoCmnd(hocVienDTO.getSoCmnd());
-                hocVien.setSoDienThoai(hocVienDTO.getSoDienThoai());
-                hocVien.setTenHocVien(hocVienDTO.getTenHocVien());
-                hocVien.setUrlHinhDaiDien(fileUrl);
-                hocVien.setGioiTinh(hocVienDTO.getGioiTinh());
-                hocVien.setNgaySinh(hocVienDTO.getNgaySinh());
-                hocVien.setTinhTrangHocTap(hocVienDTO.getTinhTrangHocTap());
-                hocVien.setNgayCapNhatGanNhat(LocalDate.now());
+        LinhVuc linhVuc = linhVucRepository.findById(taiKhoanGiangVienDTO.getMaLinhVuc())
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy lĩnh vực với mã: " + taiKhoanGiangVienDTO.getMaLinhVuc()));
 
-                hocVienRepository.save(hocVien);
-                break;
+        GiangVien giangVien = new GiangVien();
+        giangVien.setTaiKhoan(taiKhoan);
+        giangVien.setCoQuanCongTac(taiKhoanGiangVienDTO.getCoQuanCongTac());
+        giangVien.setDiaChi(taiKhoanGiangVienDTO.getDiaChi());
+        giangVien.setEmail(taiKhoanGiangVienDTO.getEmail());
+        giangVien.setGhiChu(taiKhoanGiangVienDTO.getGhiChu());
+        giangVien.setLinhVuc(linhVuc);
+        giangVien.setNgaySinh(taiKhoanGiangVienDTO.getNgaySinh());
+        giangVien.setSoCmnd(taiKhoanGiangVienDTO.getSoCmnd());
+        giangVien.setSoDienThoai(taiKhoanGiangVienDTO.getSoDienThoai());
+        giangVien.setTenGiangVien(taiKhoanGiangVienDTO.getTenGiangVien());
+        giangVien.setTinhTrangCongTac(taiKhoanGiangVienDTO.getTinhTrangCongTac());
+        giangVien.setUrlHinhDaiDien(fileUrl);
+        giangVien.setGioiTinh(taiKhoanGiangVienDTO.getGioiTinh());
 
-            case "GIANGVIEN":
-                 GiangVienDTO giangVienDTO = (GiangVienDTO) taiKhoanDTO;
-                LinhVuc linhVuc = linhVucRepository.findById(giangVienDTO.getMaLinhVuc())
-                        .orElseThrow(() -> new DataNotFoundException("Không tìm thấy lĩnh vực với mã: " + giangVienDTO.getMaLinhVuc()));
-
-                GiangVien giangVien = new GiangVien();
-                giangVien.setTaiKhoan(taiKhoan);
-                giangVien.setCoQuanCongTac(giangVienDTO.getCoQuanCongTac());
-                giangVien.setDiaChi(giangVienDTO.getDiaChi());
-                giangVien.setEmail(giangVienDTO.getEmail());
-                giangVien.setGhiChu(giangVienDTO.getGhiChu());
-                giangVien.setLinhVuc(linhVuc);
-                giangVien.setNgaySinh(giangVienDTO.getNgaySinh());
-                giangVien.setSoCmnd(giangVienDTO.getSoCmnd());
-                giangVien.setSoDienThoai(giangVienDTO.getSoDienThoai());
-                giangVien.setTenGiangVien(giangVienDTO.getTenGiangVien());
-                giangVien.setTinhTrangCongTac(giangVienDTO.getTinhTrangCongTac());
-                giangVien.setUrlHinhDaiDien(fileUrl);
-                giangVien.setGioiTinh(giangVienDTO.getGioiTinh());
-
-                giangVienRepository.save(giangVien);
-                break;
-
-            default:
-                // Nếu không phải học viên hoặc giảng viên, không làm gì thêm
-                break;
-        }
+        giangVienRepository.save(giangVien);
 
         return taiKhoan;
     }
 
+    @Override
+    public TaiKhoan themTaiKhoanHocVien(TaiKhoan_HocVienDTO taiKhoanHocVienDTO, MultipartFile file) throws Exception {
+        if (taiKhoanRepository.existsByTenTaiKhoan(taiKhoanHocVienDTO.getTenTaiKhoan())) {
+            throw new Exception("Tên tài khoản đã tồn tại");
+        }
 
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setTenTaiKhoan(taiKhoanHocVienDTO.getTenTaiKhoan());
+        taiKhoan.setMatKhau(passwordEncoder.encode(taiKhoanHocVienDTO.getMatKhau()));
+        taiKhoan.setVaiTro(taiKhoanHocVienDTO.getVaiTro());
+        taiKhoan.setGhiChu(taiKhoanHocVienDTO.getGhiChu());
+
+        taiKhoan = taiKhoanRepository.save(taiKhoan);
+
+        String fileUrl = null;
+        if (file != null && !file.isEmpty()) {
+            fileUrl = fileService.saveFile(file);
+        }
+
+        HocVien hocVien = new HocVien();
+        hocVien.setTaiKhoan(taiKhoan);
+        hocVien.setDiaChi(taiKhoanHocVienDTO.getDiaChi());
+        hocVien.setEmail(taiKhoanHocVienDTO.getEmail());
+        hocVien.setGhiChu(taiKhoanHocVienDTO.getGhiChu());
+        hocVien.setSoCmnd(taiKhoanHocVienDTO.getSoCmnd());
+        hocVien.setSoDienThoai(taiKhoanHocVienDTO.getSoDienThoai());
+        hocVien.setTenHocVien(taiKhoanHocVienDTO.getTenHocVien());
+        hocVien.setUrlHinhDaiDien(fileUrl);
+        hocVien.setGioiTinh(taiKhoanHocVienDTO.getGioiTinh());
+        hocVien.setNgaySinh(taiKhoanHocVienDTO.getNgaySinh());
+        hocVien.setTinhTrangHocTap(taiKhoanHocVienDTO.getTinhTrangHocTap());
+        hocVien.setNgayCapNhatGanNhat(LocalDate.now());
+
+        hocVienRepository.save(hocVien);
+
+        return taiKhoan;
+    }
 
     @Transactional
     @Override

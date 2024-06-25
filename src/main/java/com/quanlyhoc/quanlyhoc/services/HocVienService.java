@@ -4,7 +4,9 @@ import com.quanlyhoc.quanlyhoc.dtos.HocVienDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
 import com.quanlyhoc.quanlyhoc.models.GiangVien;
 import com.quanlyhoc.quanlyhoc.models.HocVien;
+import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
 import com.quanlyhoc.quanlyhoc.repositories.HocVienRepository;
+import com.quanlyhoc.quanlyhoc.repositories.TaiKhoanRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IHocVienService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,9 @@ public class HocVienService implements IHocVienService {
     private final HocVienRepository hocVienRepository;
 
     @Autowired
+    private final TaiKhoanRepository taiKhoanRepository;
+
+    @Autowired
     private final FileService fileService;
 
     @Transactional
@@ -34,6 +39,9 @@ public class HocVienService implements IHocVienService {
     public HocVien suaHocVien(Long id, HocVienDTO hocVienDTO, MultipartFile file) throws Exception {
         HocVien exHocVien = hocVienRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy học viên với mã: " + id));
+
+        TaiKhoan exTaiKhoan = taiKhoanRepository.findById(hocVienDTO.getMaTaiKhoan())
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy tài khoản với mã: " + hocVienDTO.getMaTaiKhoan()));
 
         exHocVien.setDiaChi(hocVienDTO.getDiaChi());
         exHocVien.setEmail(hocVienDTO.getEmail());
@@ -44,6 +52,7 @@ public class HocVienService implements IHocVienService {
         exHocVien.setTenHocVien(hocVienDTO.getTenHocVien());
         exHocVien.setTinhTrangHocTap(hocVienDTO.getTinhTrangHocTap());
         exHocVien.setGioiTinh(hocVienDTO.getGioiTinh());
+        exHocVien.setTaiKhoan(exTaiKhoan);
 
         // Kiểm tra nếu có file được upload
         if (file != null && !file.isEmpty()) {
@@ -83,7 +92,8 @@ public class HocVienService implements IHocVienService {
             String[] columns = {
                     "Mã học viên",
                     "Tên học viên",
-                    "Địa chỉ", "Email",
+                    "Địa chỉ",
+                    "Email",
                     "Ghi chú",
                     "Ngày sinh",
                     "Số CMND",
@@ -106,12 +116,12 @@ public class HocVienService implements IHocVienService {
                 row.createCell(2).setCellValue(hocVien.getDiaChi());
                 row.createCell(3).setCellValue(hocVien.getEmail());
                 row.createCell(4).setCellValue(hocVien.getGhiChu());
-                row.createCell(7).setCellValue(hocVien.getNgaySinh().toString());
-                row.createCell(8).setCellValue(hocVien.getSoCmnd());
-                row.createCell(9).setCellValue(hocVien.getSoDienThoai());
-                row.createCell(10).setCellValue(hocVien.getUrlHinhDaiDien());
-                row.createCell(11).setCellValue(hocVien.getGioiTinh());
-                row.createCell(13).setCellValue(hocVien.getTinhTrangHocTap());
+                row.createCell(5).setCellValue(hocVien.getNgaySinh().toString());
+                row.createCell(6).setCellValue(hocVien.getSoCmnd());
+                row.createCell(7).setCellValue(hocVien.getSoDienThoai());
+                row.createCell(8).setCellValue(hocVien.getUrlHinhDaiDien());
+                row.createCell(9).setCellValue(hocVien.getGioiTinh());
+                row.createCell(10).setCellValue(hocVien.getTinhTrangHocTap());
             }
 
             try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {

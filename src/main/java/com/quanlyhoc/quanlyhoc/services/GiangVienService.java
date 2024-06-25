@@ -4,8 +4,10 @@ import com.quanlyhoc.quanlyhoc.dtos.GiangVienDTO;
 import com.quanlyhoc.quanlyhoc.exceptions.DataNotFoundException;
 import com.quanlyhoc.quanlyhoc.models.GiangVien;
 import com.quanlyhoc.quanlyhoc.models.LinhVuc;
+import com.quanlyhoc.quanlyhoc.models.TaiKhoan;
 import com.quanlyhoc.quanlyhoc.repositories.GiangVienRepository;
 import com.quanlyhoc.quanlyhoc.repositories.LinhVucRepository;
+import com.quanlyhoc.quanlyhoc.repositories.TaiKhoanRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.IGiangVienService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,9 @@ public class GiangVienService implements IGiangVienService {
     private final LinhVucRepository linhVucRepository;
 
     @Autowired
+    private final TaiKhoanRepository taiKhoanRepository;
+
+    @Autowired
     private final FileService fileService;
 
     @Transactional
@@ -44,6 +49,9 @@ public class GiangVienService implements IGiangVienService {
 
         LinhVuc exLinhVuc = linhVucRepository.findById(giangVienDTO.getMaLinhVuc())
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy lĩnh vực với mã: " + giangVienDTO.getMaLinhVuc()));
+
+        TaiKhoan exTaiKhoan = taiKhoanRepository.findById(giangVienDTO.getMaTaiKhoan())
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy tài khoản với mã: " + giangVienDTO.getMaTaiKhoan()));
 
         exGiangVien.setCoQuanCongTac(giangVienDTO.getCoQuanCongTac());
         exGiangVien.setDiaChi(giangVienDTO.getDiaChi());
@@ -57,6 +65,7 @@ public class GiangVienService implements IGiangVienService {
         exGiangVien.setTinhTrangCongTac(giangVienDTO.getTinhTrangCongTac());
         exGiangVien.setUrlHinhDaiDien(giangVienDTO.getUrlHinhDaiDien());
         exGiangVien.setGioiTinh(giangVienDTO.getGioiTinh());
+        exGiangVien.setTaiKhoan(exTaiKhoan);
 
         if (file != null && !file.isEmpty()) {
             String fileUrl = fileService.saveFile(file);
