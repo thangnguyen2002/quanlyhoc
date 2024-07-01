@@ -80,10 +80,14 @@ public class HocVienController {
     }
 
     @PostMapping("/guiEmailHocVien")
-    public ResponseEntity<?> guiEmailHocVien(@RequestBody EmailFormDTO emailFormDTO) {
+    public ResponseEntity<?> guiEmailHocVien(
+            @RequestParam List<String> emailsNhan,
+            @RequestParam String tieuDe,
+            @RequestParam String noiDung
+    ) {
         try {
-            emailService.guiEmail(emailFormDTO.getNguoiNhan(), emailFormDTO.getTieuDe(), emailFormDTO.getNoiDung());
-            return new ResponseEntity<>("Gửi email thành công", HttpStatus.OK);
+            emailService.sendMultipleEmails(emailsNhan, tieuDe, noiDung);
+            return new ResponseEntity<>("Gửi emails thành công", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

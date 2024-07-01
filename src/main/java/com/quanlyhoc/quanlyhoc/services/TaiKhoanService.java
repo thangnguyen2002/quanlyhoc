@@ -11,17 +11,20 @@ import com.quanlyhoc.quanlyhoc.repositories.HocVienRepository;
 import com.quanlyhoc.quanlyhoc.repositories.LinhVucRepository;
 import com.quanlyhoc.quanlyhoc.repositories.TaiKhoanRepository;
 import com.quanlyhoc.quanlyhoc.services.interfaces.ITaiKhoanService;
+import com.quanlyhoc.quanlyhoc.shared.utils.JwtUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +46,9 @@ public class TaiKhoanService implements ITaiKhoanService {
 
     @Autowired
     private final FileService fileService;
+
+    @Autowired
+    private final JwtUtils jwtUtils;
 
     @Transactional
     @Override
@@ -140,6 +146,60 @@ public class TaiKhoanService implements ITaiKhoanService {
         hocVienRepository.save(hocVien);
 
         return taiKhoan;
+    }
+
+    @Transactional
+    @Override
+    public String dangNhap(String tenTaiKhoan, String matKhau) throws Exception {
+        Optional<TaiKhoan> optionalTaiKhoan = Optional.ofNullable(taiKhoanRepository.findByTenTaiKhoan(tenTaiKhoan));
+
+        if (optionalTaiKhoan.isEmpty()) {
+            throw new DataNotFoundException("Tên tài khoản hoặc mật khẩu không hợp lệ");
+        }
+
+        TaiKhoan exTaiKhoan = optionalTaiKhoan.get();
+        // Check password
+        if (!passwordEncoder.matches(matKhau, exTaiKhoan.getMatKhau())) {
+            throw new BadCredentialsException("Mật khẩu không đúng. Xin thử lại");
+        }
+
+        // Generate JWT TOKEN
+        return jwtUtils.generateToken(exTaiKhoan.getTenTaiKhoan());
+    }
+
+    @Override
+    public TaiKhoan getUserDetailsFromToken(String token) throws Exception {
+        if (jwtUtils.isTokenExpired(token)) {
+            throw new Exception("Token đã hết hạn");
+        }
+        String tenTaiKhoan = jwtUtils.extractTenTaiKhoan(token);
+        Optional<TaiKhoan> taiKhoan = Optional.ofNullable(taiKhoanRepository.findByTenTaiKhoan(tenTaiKhoan));
+        if (taiKhoan.isPresent()) {
+            return taiKhoan.get();
+        } else {
+            throw new Exception("Không tìm thấy tài khoản");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void thayDoiMatKhau(String tenTaiKhoan, String matKhauCu, String matKhauMoi) throws Exception {
+        Optional<TaiKhoan> optionalTaiKhoan = Optional.ofNullable(taiKhoanRepository.findByTenTaiKhoan(tenTaiKhoan));
+
+        if (optionalTaiKhoan.isEmpty()) {
+            throw new DataNotFoundException("Không tìm thấy tên tài khoản");
+        }
+
+        TaiKhoan exTaiKhoan = optionalTaiKhoan.get();
+
+        // Check current password
+        if (!passwordEncoder.matches(matKhauCu, exTaiKhoan.getMatKhau())) {
+            throw new BadCredentialsException("Mật khẩu cũ không hợp lệ");
+        }
+
+        // Update to the new password
+        exTaiKhoan.setMatKhau(passwordEncoder.encode(matKhauMoi));
+        taiKhoanRepository.save(exTaiKhoan);
     }
 
     @Transactional

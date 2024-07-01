@@ -52,10 +52,14 @@ public class LienHeController {
     }
 
     @PostMapping("/guiEmailLienHe")
-    public ResponseEntity<?> guiEmailLienHe(@RequestBody EmailFormDTO emailFormDTO) {
+    public ResponseEntity<?> guiEmailLienHe(
+            @RequestParam List<String> emailsNhan,
+            @RequestParam String tieuDe,
+            @RequestParam String noiDung
+    ) {
         try {
-            emailService.guiEmail(emailFormDTO.getNguoiNhan(), emailFormDTO.getTieuDe(), emailFormDTO.getNoiDung()); //phai tim email ton tai ko...
-            return new ResponseEntity<>("Gửi email thành công", HttpStatus.OK);
+            emailService.sendMultipleEmails(emailsNhan, tieuDe, noiDung);
+            return new ResponseEntity<>("Gửi emails thành công", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
